@@ -2,40 +2,59 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hidden Audio Prank</title>
+    <title>Autoplay Audio</title>
     <style>
         body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             margin: 0;
             background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        #playButton {
+            padding: 20px 40px;
+            font-size: 20px;
+            cursor: pointer;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-
+    <button id="playButton">Play Audio</button>
     <audio id="audio" src="https://drive.google.com/file/d/1nHU52SimWSzqwemN_7sTb-foClLMkh98/view?usp=sharing"></audio>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var audio = document.getElementById('audio');
+            var playButton = document.getElementById('playButton');
 
-            // Громкость на максимум
             audio.volume = 1.0;
 
-            // Автозапуск аудио
+            // Попытка автозапуска
             var playAudio = function() {
                 audio.play().catch(function() {
-                    console.warn("Автовоспроизведение заблокировано. Попытка после касания.");
-                    document.addEventListener('click', function once() {
-                        audio.play();
-                        document.removeEventListener('click', once);
-                    });
+                    console.log("Автозапуск заблокирован, показываем кнопку.");
+                    playButton.style.display = 'block';
                 });
             };
 
             playAudio();
+
+            // Запуск при нажатии на кнопку
+            playButton.addEventListener('click', function() {
+                audio.play();
+                playButton.style.display = 'none';
+            });
+
+            audio.addEventListener('play', function() {
+                playButton.style.display = 'none';
+            });
         });
     </script>
-
 </body>
 </html>
